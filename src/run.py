@@ -4,10 +4,13 @@ from typing import Tuple
 from runrex.main import process
 from runrex.schema import validate_config
 
+from apanc_nlp.algo.acute_pancreatitis import get_acute_pancreatitis
+
 
 def main(config_file):
     conf = validate_config(config_file)
     algorithms = {
+        'acute_pancreatitis': get_acute_pancreatitis,
     }
     process(**conf, algorithms=algorithms, ssplit=ssplit)
 
