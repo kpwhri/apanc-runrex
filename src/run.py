@@ -5,7 +5,7 @@ from runrex.main import process
 from runrex.schema import validate_config
 
 from apanc_nlp.algo.abd_pain import has_abdominal_pain
-from apanc_nlp.algo.acute_pancreatitis import has_acute_pancreatitis
+from apanc_nlp.algo.acute_pancreatitis import has_pancreatitis
 from apanc_nlp.algo.competing_dx import has_competing_dx
 from apanc_nlp.algo.nausea import has_nausea
 from apanc_nlp.utils import algo_to_result
@@ -14,7 +14,7 @@ from apanc_nlp.utils import algo_to_result
 def main(config_file):
     conf = validate_config(config_file)
     algorithms = {
-        'acute_pancreatitis': lambda d, e: algo_to_result(has_acute_pancreatitis, d, e),
+        'acute_pancreatitis': lambda d, e: algo_to_result(has_pancreatitis, d, e),
         'abdominal_pain': lambda d, e: algo_to_result(has_abdominal_pain, d, e),
         'competing_dx': lambda d, e: algo_to_result(has_competing_dx, d, e),
         'nausea': lambda d, e: algo_to_result(has_nausea, d, e),

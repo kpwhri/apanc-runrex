@@ -14,6 +14,7 @@ class PancreatitisStatus(Status):
     POSITIVE = 1
     ACUTE = 2
     CHRONIC = 3
+    INFLAMMATION = 4
 
 
 PANCREATITIS = Pattern(
@@ -21,9 +22,17 @@ PANCREATITIS = Pattern(
     rf'pancreatitis'
     rf')',
 )
+
 ACUTE_PANCREATITIS = Pattern(
     rf'('
     rf'acute pancreatitis'
+    rf')',
+)
+
+INFLAMMATION_PANCREAS = Pattern(
+    rf'('
+    rf'inflam\w+ pancrea\w+'
+    rf'|pancea\w+ (\w+ ){{0,3}}inflam\w+'
     rf')',
 )
 
@@ -34,15 +43,18 @@ CHRONIC_PANCREATITIS = Pattern(
 )
 
 
-def has_acute_pancreatitis(document: Document):
+def has_pancreatitis(document: Document):
     for sentence in document:
         found = False
         for text, start, end in sentence.get_patterns(ACUTE_PANCREATITIS):
             found = True
-            yield PancreatitisStatus.POSITIVE, text, start, end
+            yield PancreatitisStatus.ACUTE, text, start, end
         for text, start, end in sentence.get_patterns(CHRONIC_PANCREATITIS):
             found = True
-            yield PancreatitisStatus.POSITIVE, text, start, end
+            yield PancreatitisStatus.CHRONIC, text, start, end
+        for text, start, end in sentence.get_patterns(INFLAMMATION_PANCREAS):
+            found = True
+            yield PancreatitisStatus.INFLAMMATION, text, start, end
         if not found:
             for text, start, end in sentence.get_patterns(PANCREATITIS):
                 yield PancreatitisStatus.POSITIVE, text, start, end
