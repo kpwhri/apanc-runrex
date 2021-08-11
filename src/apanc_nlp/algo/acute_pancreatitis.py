@@ -6,20 +6,43 @@ from runrex.algo.pattern import Pattern
 from runrex.algo.result import Status
 from runrex.text import Document
 
+from apanc_nlp.algo.common import chronic
 
-class AcutePancreatitisStatus(Status):
+
+class PancreatitisStatus(Status):
     NONE = -1
     POSITIVE = 1
+    ACUTE = 2
+    CHRONIC = 3
 
 
-ACUTE_PANCREATITIS = Pattern(  # only in sentences with epi mention
+PANCREATITIS = Pattern(
+    rf'('
+    rf'pancreatitis'
+    rf')',
+)
+ACUTE_PANCREATITIS = Pattern(
     rf'('
     rf'acute pancreatitis'
+    rf')',
+)
+
+CHRONIC_PANCREATITIS = Pattern(
+    rf'('
+    rf'{chronic} pancreatitis'
     rf')',
 )
 
 
 def has_acute_pancreatitis(document: Document):
     for sentence in document:
+        found = False
         for text, start, end in sentence.get_patterns(ACUTE_PANCREATITIS):
-            yield AcutePancreatitisStatus.POSITIVE, text, start, end
+            found = True
+            yield PancreatitisStatus.POSITIVE, text, start, end
+        for text, start, end in sentence.get_patterns(CHRONIC_PANCREATITIS):
+            found = True
+            yield PancreatitisStatus.POSITIVE, text, start, end
+        if not found:
+            for text, start, end in sentence.get_patterns(PANCREATITIS):
+                yield PancreatitisStatus.POSITIVE, text, start, end
