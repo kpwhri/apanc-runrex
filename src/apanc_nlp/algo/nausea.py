@@ -26,7 +26,7 @@ VOMITING = Pattern(  # only in sentences with epi mention
 
 NAUSEA = Pattern(
     rf'('
-    rf'nausea\w+|queasy|bilious'
+    rf'nause\w+|queasy|bilious'
     rf')',
     negates=[negation]
 )

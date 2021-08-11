@@ -55,7 +55,8 @@ CHEST_PAIN = Pattern(
 
 RADIATING_TO_BACK = Pattern(
     rf'('
-    rf'radiating to back'
+    rf'radiat\w+ ((in)to|toward)( the)? back'
+    rf'|radiat\w+ back'
     rf')',
     negates=[negation]
 )

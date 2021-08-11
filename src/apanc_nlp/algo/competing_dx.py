@@ -53,7 +53,7 @@ BOWEL_MOVEMENTS = Pattern(
 COLANGITIS = Pattern(
     rf'('
     rf'ch?olang[io]t\w+'
-    rf'ch?olec[yi]sti\w+'
+    rf'|ch?olec[yi]sti\w+'  # cholecystitis
     rf'|(inflam|infect|swell)\w+( \w+){{0,3}} bile duct'
     rf'|bile duct (swell|inflam|infect)\w+'
     rf')',
@@ -103,6 +103,8 @@ def has_competing_dx(document: Document):
             yield CompetingDx.ACUTE_APPENDICITIS, text, start, end
         for text, start, end in sentence.get_patterns(GALL_BLADDER_DISEASE):
             yield CompetingDx.GALL_BLADDER_DISEASE, text, start, end
+        for text, start, end in sentence.get_patterns(COLANGITIS):
+            yield CompetingDx.COLANGITIS, text, start, end
         for text, start, end in sentence.get_patterns(BOWEL_MOVEMENTS):
             yield CompetingDx.BOWEL_MOVEMENTS, text, start, end
         for text, start, end in sentence.get_patterns(CHRONIC_PAIN):

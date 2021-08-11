@@ -17,7 +17,7 @@ from apanc_nlp.utils import algo_to_result
 def main(config_file):
     conf = validate_config(config_file)
     algorithms = {
-        'acute_pancreatitis': lambda d, e: algo_to_result(has_pancreatitis, d, e),
+        'pancreatitis': lambda d, e: algo_to_result(has_pancreatitis, d, e),
         'abdominal_pain': lambda d, e: algo_to_result(has_abdominal_pain, d, e),
         'competing_dx': lambda d, e: algo_to_result(has_competing_dx, d, e),
         'nausea': lambda d, e: algo_to_result(has_nausea, d, e),
