@@ -6,6 +6,8 @@ from runrex.algo.pattern import Pattern
 from runrex.algo.result import Status, Result
 from runrex.text import Document
 
+from apanc_nlp.algo.common import chronic
+
 
 class AbdPain(Status):
     NONE = -1
@@ -14,10 +16,15 @@ class AbdPain(Status):
     ACUTE = 3
     EPIGASTRIC = 4
     CHEST = 5
+    CHRONIC = 6
 
 
 PAIN = Pattern(
     rf'pain'
+)
+
+CHRONIC = Pattern(
+    rf'{chronic}'
 )
 
 ABD_PAIN = Pattern(
@@ -55,6 +62,8 @@ SEVERITY = Pattern(
 
 def has_abdominal_pain(document: Document):
     for sentence in document.select_sentences_with_patterns(PAIN):
+        for text, start, end in sentence.get_patterns(CHRONIC):
+            yield AbdPain.CHRONIC, text, start, end
         for text, start, end in sentence.get_patterns(ABD_PAIN):
             yield AbdPain.PAIN, text, start, end
         for text, start, end in sentence.get_patterns(EPIGASTRIC_PAIN):
