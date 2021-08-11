@@ -7,7 +7,10 @@ from runrex.schema import validate_config
 from apanc_nlp.algo.abd_pain import has_abdominal_pain
 from apanc_nlp.algo.acute_pancreatitis import has_pancreatitis
 from apanc_nlp.algo.competing_dx import has_competing_dx
+from apanc_nlp.algo.fluid import has_fluid
 from apanc_nlp.algo.nausea import has_nausea
+from apanc_nlp.algo.necrosis import has_necrosis
+from apanc_nlp.algo.pseudocyst import has_pseudocyst
 from apanc_nlp.utils import algo_to_result
 
 
@@ -18,6 +21,9 @@ def main(config_file):
         'abdominal_pain': lambda d, e: algo_to_result(has_abdominal_pain, d, e),
         'competing_dx': lambda d, e: algo_to_result(has_competing_dx, d, e),
         'nausea': lambda d, e: algo_to_result(has_nausea, d, e),
+        'fluid': lambda d, e: algo_to_result(has_fluid, d, e),
+        'necrosis': lambda d, e: algo_to_result(has_necrosis, d, e),
+        'pseudocyst': lambda d, e: algo_to_result(has_pseudocyst, d, e),
     }
     process(**conf, algorithms=algorithms, ssplit=ssplit)
 

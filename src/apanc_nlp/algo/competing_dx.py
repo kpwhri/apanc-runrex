@@ -3,7 +3,8 @@ Competing diagnoses
 """
 
 from runrex.algo.pattern import Pattern
-from runrex.algo.result import Status, Result
+from runrex.algo.result import Status
+from runrex.terms import negation
 from runrex.text import Document
 
 from apanc_nlp.algo.common import chronic
@@ -27,14 +28,16 @@ gallbladder = '(biliary|gall bladder)'
 ACUTE_APPENDICITIS = Pattern(
     rf'('
     rf'acute (inflamed )?appendicitis'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 GALL_BLADDER_DISEASE = Pattern(
     rf'('
     rf'{gallbladder} {disorder}'
     rf'|{disorder}( \w+){{0,3}} {gallbladder}'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 BOWEL_MOVEMENTS = Pattern(
@@ -43,22 +46,25 @@ BOWEL_MOVEMENTS = Pattern(
     rf'|defa?ecation'
     rf'|stool passing'
     rf'|passing stool'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 COLANGITIS = Pattern(
     rf'('
     rf'ch?olang[io]t\w+'
     rf'ch?olec[yi]sti\w+'
-    rf'|(inflam|infect)\w+( \w+){{0,3}} bile duct'
-    rf'|bile duct (inflam|infect)\w+'
-    rf')'
+    rf'|(inflam|infect|swell)\w+( \w+){{0,3}} bile duct'
+    rf'|bile duct (swell|inflam|infect)\w+'
+    rf')',
+    negates=[negation]
 )
 
 CHRONIC_PAIN = Pattern(
     rf'('
     rf'{chronic} pain'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 STROKE = Pattern(
@@ -66,7 +72,8 @@ STROKE = Pattern(
     rf'stroke|apoplexy|\bcvas?\b'
     rf'|(cerebr\w+ ?)?vascular (accident|event)'
     rf'|brain attack'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 BLOOD_IN_STOOL = Pattern(
@@ -75,7 +82,8 @@ BLOOD_IN_STOOL = Pattern(
     rf'|bloody stools?'
     rf'|(stools?|fa?eces)( \w+){{0,3}} (bloody?)'
     rf'|ha?ematochezia'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 BLOOD_IN_VOMIT = Pattern(
@@ -84,7 +92,8 @@ BLOOD_IN_VOMIT = Pattern(
     rf'|bloody (vomit|throw up)'
     rf'|ha?ematemesis'
     rf'|(vomit\w*|throw\w* up)( \w+){{0,3}} (bloody?)'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 

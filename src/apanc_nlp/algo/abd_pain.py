@@ -4,6 +4,7 @@ Abdominal pain.
 
 from runrex.algo.pattern import Pattern
 from runrex.algo.result import Status, Result
+from runrex.terms import negation
 from runrex.text import Document
 
 from apanc_nlp.algo.common import chronic
@@ -20,11 +21,13 @@ class AbdPain(Status):
 
 
 PAIN = Pattern(
-    rf'pain'
+    rf'pain',
+    negates=[negation]
 )
 
 CHRONIC = Pattern(
-    rf'{chronic}'
+    rf'{chronic}',
+    negates=[negation]
 )
 
 ABD_PAIN = Pattern(
@@ -32,31 +35,36 @@ ABD_PAIN = Pattern(
     rf'(abd?(ominal)?|luq|llq|rlq|ruq|flank|uq|lq|quadrant) pain'
     rf'|pain site abd(omen)?'
     rf'|pain in (the )?abd(omen)?'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 EPIGASTRIC_PAIN = Pattern(
     rf'('
     rf'epigastr\w+ pain|pain site epigrast\w+|pain in (the )?epigast\w+'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 CHEST_PAIN = Pattern(
     rf'('
     rf'chest pain|pain site chest|pain in (the )?chest'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 RADIATING_TO_BACK = Pattern(
     rf'('
     rf'radiating to back'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 SEVERITY = Pattern(
     rf'('
     rf'sudden onset|severe|burning|intense|stabbing'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 

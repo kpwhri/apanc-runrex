@@ -4,6 +4,7 @@ Identify nausea-related conditions (symptom of acute pancreatitis)
 
 from runrex.algo.pattern import Pattern
 from runrex.algo.result import Status
+from runrex.terms import negation
 from runrex.text import Document
 
 
@@ -20,12 +21,14 @@ VOMITING = Pattern(  # only in sentences with epi mention
     rf'|dry heav\w+'
     rf'|throw\w* up'
     rf')',
+    negates=[negation]
 )
 
 NAUSEA = Pattern(
     rf'('
     rf'nausea\w+|queasy|bilious'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 
