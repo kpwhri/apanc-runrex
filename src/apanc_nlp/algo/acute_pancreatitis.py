@@ -25,13 +25,7 @@ ACUTE_PANCREATITIS = Pattern(  # only in sentences with epi mention
 )
 
 
-def _has_acute_pancreatitis(document: Document):
+def has_acute_pancreatitis(document: Document):
     for sentence in document:
         for text, start, end in sentence.get_patterns(ACUTE_PANCREATITIS):
             yield AcutePancreatitisStatus.POSITIVE, text, start, end
-
-
-def get_acute_pancreatitis(document: Document, expected=None):
-    for status, text, start, end in _has_acute_pancreatitis(document):
-        yield Result(status, status.value, expected=expected,
-                     text=text, start=start, end=end)
