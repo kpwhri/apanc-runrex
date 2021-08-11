@@ -3,7 +3,7 @@ Identify general mentions of acute pancreatitis.
 """
 
 from runrex.algo.pattern import Pattern
-from runrex.algo.result import Status, Result
+from runrex.algo.result import Status
 from runrex.text import Document
 
 

@@ -82,6 +82,7 @@ BLOOD_IN_VOMIT = Pattern(
     rf'('
     rf'blood in (vomit|throw up)'
     rf'|bloody (vomit|throw up)'
+    rf'|ha?ematemesis'
     rf'|(vomit\w*|throw\w* up)( \w+){{0,3}} (bloody?)'
     rf')'
 )
