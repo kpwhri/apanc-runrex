@@ -20,6 +20,7 @@ class CompetingDx(Status):
     STROKE = 8
     BLOOD_IN_STOOL = 9
     BLOOD_IN_VOMIT = 10
+    PEPTIC_ULCER = 11
 
 
 disorder = '(disease|disorder)'
@@ -96,22 +97,27 @@ BLOOD_IN_VOMIT = Pattern(
     negates=[negation]
 )
 
+PEPTIC_ULCER = Pattern(
+    rf'('
+    rf'(peptic|gastroduodenal) ulcer'
+    rf'|ulcer (of|in) (the )?gastrointest\w+'
+    rf')',
+    negates=[negation]
+)
+
 
 def has_competing_dx(document: Document):
     for sentence in document:
-        for text, start, end in sentence.get_patterns(ACUTE_APPENDICITIS):
-            yield CompetingDx.ACUTE_APPENDICITIS, text, start, end
-        for text, start, end in sentence.get_patterns(GALL_BLADDER_DISEASE):
-            yield CompetingDx.GALL_BLADDER_DISEASE, text, start, end
-        for text, start, end in sentence.get_patterns(COLANGITIS):
-            yield CompetingDx.COLANGITIS, text, start, end
-        for text, start, end in sentence.get_patterns(BOWEL_MOVEMENTS):
-            yield CompetingDx.BOWEL_MOVEMENTS, text, start, end
-        for text, start, end in sentence.get_patterns(CHRONIC_PAIN):
-            yield CompetingDx.CHRONIC_PAIN, text, start, end
-        for text, start, end in sentence.get_patterns(STROKE):
-            yield CompetingDx.STROKE, text, start, end
-        for text, start, end in sentence.get_patterns(BLOOD_IN_STOOL):
-            yield CompetingDx.BLOOD_IN_STOOL, text, start, end
-        for text, start, end in sentence.get_patterns(BLOOD_IN_VOMIT):
-            yield CompetingDx.BLOOD_IN_VOMIT, text, start, end
+        for pat, res in [
+            (ACUTE_APPENDICITIS, CompetingDx.ACUTE_APPENDICITIS),
+            (GALL_BLADDER_DISEASE, CompetingDx.GALL_BLADDER_DISEASE),
+            (BOWEL_MOVEMENTS, CompetingDx.BOWEL_MOVEMENTS),
+            (CHRONIC_PAIN, CompetingDx.CHRONIC_PAIN),
+            (STROKE, CompetingDx.STROKE),
+            (COLANGITIS, CompetingDx.COLANGITIS),
+            (BLOOD_IN_VOMIT, CompetingDx.BLOOD_IN_VOMIT),
+            (BLOOD_IN_STOOL, CompetingDx.BLOOD_IN_STOOL),
+            (PEPTIC_ULCER, CompetingDx.PEPTIC_ULCER),
+        ]:
+            for text, start, end in sentence.get_patterns(pat):
+                yield res, text, start, end
