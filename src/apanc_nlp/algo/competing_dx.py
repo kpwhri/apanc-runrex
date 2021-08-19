@@ -33,6 +33,8 @@ class CompetingDx(Status):
     INFLUENZA = 21
     FOOD_POISONING = 22
     ASCITES = 23
+    NEPHROLITHIASIS = 24
+    DKA = 25
 
 
 disorder = '(disease|disorder)'
@@ -203,6 +205,22 @@ ASCITES = Pattern(
     rf')'
 )
 
+NEPHROLITHIASIS = Pattern(
+    rf'('
+    rf'nephrolith\w+|renal calcul\w+|(renal|kidney) (stone|lithias\w+|calcul\w+)'
+    rf'|calculus of (the )?kidney'
+    rf')'
+)
+
+DKA = Pattern(
+    rf'('
+    rf'diabetic (keto[sa]|acid)\w+'
+    rf'|keto[sa]\w+ in diabetes'
+    rf'|diabetes mellitus with keto[ta]\w+'
+    rf'|\bdka\b'
+    rf')'
+)
+
 
 def has_competing_dx(document: Document):
     for sentence in document:
@@ -227,6 +245,9 @@ def has_competing_dx(document: Document):
             (HEPATITIS, CompetingDx.HEPATITIS),
             (INFLUENZA, CompetingDx.INFLUENZA),
             (FOOD_POISONING, CompetingDx.FOOD_POISONING),
+            (ASCITES, CompetingDx.ASCITES),
+            (NEPHROLITHIASIS, CompetingDx.NEPHROLITHIASIS),
+            (DKA, CompetingDx.DKA),
         ]:
             for text, start, end in sentence.get_patterns(pat):
                 yield res, text, start, end

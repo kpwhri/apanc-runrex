@@ -95,3 +95,19 @@ def test_food_poisoning(text, matches):
 ])
 def test_ascites(text, matches):
     assert bool(cdx.ASCITES.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('nephrolithiasis', True),
+    ('renal calculi', True),
+])
+def test_nephrolithiasis(text, matches):
+    assert bool(cdx.NEPHROLITHIASIS.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('dka', True),
+    ('diabetic ketoacidosis', True),
+])
+def test_dka(text, matches):
+    assert bool(cdx.DKA.matches(text)) == matches
