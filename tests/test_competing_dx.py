@@ -41,3 +41,10 @@ def test_ileus(text, matches):
 ])
 def test_constipation(text, matches):
     assert bool(cdx.CONSTIPATION.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('mesenteric ischaemia', True),
+])
+def test_constipation(text, matches):
+    assert bool(cdx.MESENTERIC_ISCHEMIA.matches(text)) == matches
