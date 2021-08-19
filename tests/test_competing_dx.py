@@ -56,3 +56,10 @@ def test_mesentric_ischemia(text, matches):
 ])
 def test_diverticulosis(text, matches):
     assert bool(cdx.DIVERTICULOSIS.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('appendicitis', True),
+])
+def test_appendicitis(text, matches):
+    assert bool(cdx.APPENDICITIS.matches(text)) == matches

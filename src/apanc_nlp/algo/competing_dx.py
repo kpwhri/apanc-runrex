@@ -28,6 +28,7 @@ class CompetingDx(Status):
     CONSTIPATION = 16
     MESENTERIC_ISCHEMIA = 17
     DIVERTICULOSIS = 18
+    APPENDICITIS = 19
 
 
 disorder = '(disease|disorder)'
@@ -36,6 +37,13 @@ gallbladder = '(biliary|gall bladder)'
 ACUTE_APPENDICITIS = Pattern(
     rf'('
     rf'acute (inflamed )?appendicitis'
+    rf')',
+    negates=[negation]
+)
+
+APPENDICITIS = Pattern(
+    rf'('
+    rf'appendicitis'
     rf')',
     negates=[negation]
 )
@@ -169,6 +177,7 @@ def has_competing_dx(document: Document):
     for sentence in document:
         for pat, res in [
             (ACUTE_APPENDICITIS, CompetingDx.ACUTE_APPENDICITIS),
+            (APPENDICITIS, CompetingDx.APPENDICITIS),
             (GALL_BLADDER_DISEASE, CompetingDx.GALL_BLADDER_DISEASE),
             (BOWEL_MOVEMENTS, CompetingDx.BOWEL_MOVEMENTS),
             (CHRONIC_PAIN, CompetingDx.CHRONIC_PAIN),
