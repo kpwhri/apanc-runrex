@@ -35,6 +35,10 @@ class CompetingDx(Status):
     ASCITES = 23
     NEPHROLITHIASIS = 24
     DKA = 25
+    MYOCARDIAL_ISCHEMIA = 26
+    BILIARY_CANCER = 27
+    IBD = 28
+    INFECTIOUS_GE = 29
 
 
 disorder = '(disease|disorder)'
@@ -221,6 +225,42 @@ DKA = Pattern(
     rf')'
 )
 
+MYOCARDIAL_ISCHEMIA = Pattern(
+    rf'('
+    rf'(myocardial|cardiac) ischa?emias?'
+    rf'|ischa?emic heart disease'
+    rf'|\bihd\b'
+    rf')'
+)
+
+BILIARY_CANCER = Pattern(
+    rf'('
+    rf'(bill?iary( tract)?|gall bladder) (cancer|malignant|tumou?r|neoplasm)'
+    rf'|(cancer|malignancy|tumou?r|neoplasm) of (the )?(bill?iary|gall bladder)'
+    rf')'
+)
+
+IBD = Pattern(
+    rf'('
+    rf'(irrit\w+|inflam\w+|auto immune) bowel'
+    rf'|\bibd\b'
+    rf'|chronic enter\w+'
+    rf')'
+)
+
+INFECTIOUS_GE = Pattern(
+    rf'('
+    rf'infecti?ous (gastro enteritis|colitis)'
+    rf')'
+)
+
+ESOPHAGITIS = Pattern(
+    rf'('
+    rf'o?esophagit\w+'
+    rf'|inflam\w+ of (the )?o?esophagus'
+    rf')'
+)
+
 
 def has_competing_dx(document: Document):
     for sentence in document:
@@ -248,6 +288,11 @@ def has_competing_dx(document: Document):
             (ASCITES, CompetingDx.ASCITES),
             (NEPHROLITHIASIS, CompetingDx.NEPHROLITHIASIS),
             (DKA, CompetingDx.DKA),
+            (MYOCARDIAL_ISCHEMIA, CompetingDx.MYOCARDIAL_ISCHEMIA),
+            (BILIARY_CANCER, CompetingDx.BILIARY_CANCER),
+            (IBD, CompetingDx.IBD),
+            (INFECTIOUS_GE, CompetingDx.INFECTIOUS_GE),
+            (ESOPHAGITIS, CompetingDx.ESOPHAGITIS),
         ]:
             for text, start, end in sentence.get_patterns(pat):
                 yield res, text, start, end

@@ -111,3 +111,44 @@ def test_nephrolithiasis(text, matches):
 ])
 def test_dka(text, matches):
     assert bool(cdx.DKA.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('myocardial ischemia', True),
+    ('ihd', True),
+    ('ischaemic heart disease', True),
+])
+def test_myocardial_ischemia(text, matches):
+    assert bool(cdx.MYOCARDIAL_ISCHEMIA.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('biliary cancer', True),
+    ('malignant tumour of biliary tract', True),
+])
+def test_biliary_cancer(text, matches):
+    assert bool(cdx.BILIARY_CANCER.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('ibd', True),
+    ('inflammatory bowel disease', True),
+])
+def test_ibd(text, matches):
+    assert bool(cdx.IBD.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('infectious gastro-enteritis', True),
+    ('infectous colitis', True),
+])
+def test_infectious_ge(text, matches):
+    assert bool(cdx.INFECTIOUS_GE.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('esophagitis', True),
+    ('esophagitides', True),
+])
+def test_esophagitis(text, matches):
+    assert bool(cdx.ESOPHAGITIS.matches(text)) == matches
