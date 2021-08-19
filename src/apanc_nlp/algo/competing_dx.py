@@ -21,6 +21,7 @@ class CompetingDx(Status):
     BLOOD_IN_STOOL = 9
     BLOOD_IN_VOMIT = 10
     PEPTIC_ULCER = 11
+    GASTRODUODENITIS = 12
 
 
 disorder = '(disease|disorder)'
@@ -105,6 +106,13 @@ PEPTIC_ULCER = Pattern(
     negates=[negation]
 )
 
+GASTRODUODENITIS = Pattern(
+    rf'('
+    rf'gastroduodenitis'
+    rf'|gastritis (\w+ ){{0,3}}duodenitis'
+    rf')'
+)
+
 
 def has_competing_dx(document: Document):
     for sentence in document:
@@ -118,6 +126,7 @@ def has_competing_dx(document: Document):
             (BLOOD_IN_VOMIT, CompetingDx.BLOOD_IN_VOMIT),
             (BLOOD_IN_STOOL, CompetingDx.BLOOD_IN_STOOL),
             (PEPTIC_ULCER, CompetingDx.PEPTIC_ULCER),
+            (GASTRODUODENITIS, CompetingDx.GASTRODUODENITIS),
         ]:
             for text, start, end in sentence.get_patterns(pat):
                 yield res, text, start, end
