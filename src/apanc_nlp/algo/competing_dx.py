@@ -30,6 +30,8 @@ class CompetingDx(Status):
     DIVERTICULOSIS = 18
     APPENDICITIS = 19
     HEPATITIS = 20
+    INFLUENZA = 21
+    FOOD_POISONING = 22
 
 
 disorder = '(disease|disorder)'
@@ -181,6 +183,19 @@ HEPATITIS = Pattern(
     rf')'
 )
 
+INFLUENZA = Pattern(
+    rf'('
+    rf'influenza|\bflu\b|\bgrip?pe\b'
+    rf')'
+)
+
+FOOD_POISONING = Pattern(
+    rf'('
+    rf'food (poison\w*|intoxic\w+)'
+    rf'|food borne? (illness|poisoning)'
+    rf')'
+)
+
 
 def has_competing_dx(document: Document):
     for sentence in document:
@@ -203,6 +218,8 @@ def has_competing_dx(document: Document):
             (MESENTERIC_ISCHEMIA, CompetingDx.MESENTERIC_ISCHEMIA),
             (DIVERTICULOSIS, CompetingDx.DIVERTICULOSIS),
             (HEPATITIS, CompetingDx.HEPATITIS),
+            (INFLUENZA, CompetingDx.INFLUENZA),
+            (FOOD_POISONING, CompetingDx.FOOD_POISONING),
         ]:
             for text, start, end in sentence.get_patterns(pat):
                 yield res, text, start, end

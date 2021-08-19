@@ -71,3 +71,19 @@ def test_appendicitis(text, matches):
 ])
 def test_hepatitis(text, matches):
     assert bool(cdx.HEPATITIS.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('i have the flu', True),
+    ('afluent', False),
+])
+def test_influenza(text, matches):
+    assert bool(cdx.INFLUENZA.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('foodborne illness', True),
+    ('food poisoning', True),
+])
+def test_food_poisoning(text, matches):
+    assert bool(cdx.FOOD_POISONING.matches(text)) == matches
