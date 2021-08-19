@@ -1,9 +1,10 @@
 """
 Abdominal pain.
 """
+import re
 
 from runrex.algo.pattern import Pattern
-from runrex.algo.result import Status, Result
+from runrex.algo.result import Status
 from runrex.terms import negation
 from runrex.text import Document
 
@@ -18,6 +19,11 @@ class AbdPain(Status):
     EPIGASTRIC = 4
     CHEST = 5
     CHRONIC = 6
+    RECENT = 7
+    VERY_RECENT = 8
+    LONG_AGO = 9
+    SUDDEN_ONSET = 10
+    WORSENING = 11
 
 
 PAIN = Pattern(
@@ -63,10 +69,38 @@ RADIATING_TO_BACK = Pattern(
 
 SEVERITY = Pattern(
     rf'('
-    rf'sudden onset|severe|burning|intense|stabbing'
+    rf'severe|burning|intense|stabbing'
     rf')',
     negates=[negation]
 )
+
+SUDDEN_ONSET = Pattern(
+    rf'sudden onset'
+    rf'|onset ((late|early) )?(this|yesterday|last) (morning|evening|afternoon)'
+    rf''
+)
+
+DURATION = Pattern(
+    rf'(?P<val>\d+ (day|wk|week|d|month|mon|m))s?\b'
+)
+
+WORSENING = Pattern(
+    rf'worsening|increasing|(getting|gotten) worse'
+)
+
+duration_pat = re.compile(r'(?P<num>\d+) (?P<unit>day|wk|week|d|month|mon|m)s?\b')
+
+
+def extract_duration(text):
+    m = duration_pat.match(text)
+    num = m.group('num')
+    unit = m.group('unit')
+    if unit in {'day', 'd'}:
+        return AbdPain.VERY_RECENT
+    elif unit in {'week', 'w', 'wk'}:
+        return AbdPain.RECENT
+    elif unit in {'month', 'm', 'mon'}:
+        return AbdPain.LONG_AGO
 
 
 def has_abdominal_pain(document: Document):
@@ -83,3 +117,9 @@ def has_abdominal_pain(document: Document):
             yield AbdPain.RADIATING_TO_BACK, text, start, end
         for text, start, end in sentence.get_patterns(SEVERITY):
             yield AbdPain.ACUTE, text, start, end
+        for text, start, end in sentence.get_patterns(SUDDEN_ONSET):
+            yield AbdPain.SUDDEN_ONSET, text, start, end
+        for text, start, end in sentence.get_patterns(DURATION, index='val'):
+            yield extract_duration(text), text, start, end
+        for text, start, end in sentence.get_patterns(WORSENING):
+            yield AbdPain.WORSENING, text, start, end
