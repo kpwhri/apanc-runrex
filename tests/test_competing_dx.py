@@ -63,3 +63,11 @@ def test_diverticulosis(text, matches):
 ])
 def test_appendicitis(text, matches):
     assert bool(cdx.APPENDICITIS.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('hepatitis', True),
+    ('inflamation of the liver', True),
+])
+def test_hepatitis(text, matches):
+    assert bool(cdx.HEPATITIS.matches(text)) == matches
