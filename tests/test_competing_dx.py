@@ -87,3 +87,11 @@ def test_influenza(text, matches):
 ])
 def test_food_poisoning(text, matches):
     assert bool(cdx.FOOD_POISONING.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('hydrops abdominis', True),
+    ('hydroperitoneum', True),
+])
+def test_ascites(text, matches):
+    assert bool(cdx.ASCITES.matches(text)) == matches

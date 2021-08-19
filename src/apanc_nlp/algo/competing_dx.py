@@ -32,6 +32,7 @@ class CompetingDx(Status):
     HEPATITIS = 20
     INFLUENZA = 21
     FOOD_POISONING = 22
+    ASCITES = 23
 
 
 disorder = '(disease|disorder)'
@@ -193,6 +194,12 @@ FOOD_POISONING = Pattern(
     rf'('
     rf'food (poison\w*|intoxic\w+)'
     rf'|food borne? (illness|poisoning)'
+    rf')'
+)
+
+ASCITES = Pattern(
+    rf'('
+    rf'\bascites?\b|hydro(ps)? (peritone|abdomin)\w+'
     rf')'
 )
 
