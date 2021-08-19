@@ -113,6 +113,14 @@ GASTRODUODENITIS = Pattern(
     rf')'
 )
 
+GERD = Pattern(
+    rf'('
+    rf'\bgerd\b'
+    rf'|gastro esophag\w+ reflux'
+    rf'|gastric acid reflux'
+    rf')'
+)
+
 
 def has_competing_dx(document: Document):
     for sentence in document:
