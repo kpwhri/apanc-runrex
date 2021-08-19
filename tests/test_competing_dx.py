@@ -46,5 +46,13 @@ def test_constipation(text, matches):
 @pytest.mark.parametrize('text, matches', [
     ('mesenteric ischaemia', True),
 ])
-def test_constipation(text, matches):
+def test_mesentric_ischemia(text, matches):
     assert bool(cdx.MESENTERIC_ISCHEMIA.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('diverticuloses', True),
+    ('enteric diverticulum', True),
+])
+def test_diverticulosis(text, matches):
+    assert bool(cdx.DIVERTICULOSIS.matches(text)) == matches
