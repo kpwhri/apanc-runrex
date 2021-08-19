@@ -25,6 +25,7 @@ class CompetingDx(Status):
     GERD = 13
     INTESTINAL_OBSTRUCTION = 14
     ILEUS = 15
+    CONSTIPATION = 16
 
 
 disorder = '(disease|disorder)'
@@ -138,6 +139,14 @@ ILEUS = Pattern(
     rf')'
 )
 
+CONSTIPATION = Pattern(
+    rf'('
+    rf'constipat\w+'
+    rf'|difficulty? (passing|def[ae]cat\w+)'
+    rf'|f[ae]cal retention'
+    rf')'
+)
+
 
 def has_competing_dx(document: Document):
     for sentence in document:
@@ -155,6 +164,7 @@ def has_competing_dx(document: Document):
             (GERD, CompetingDx.GERD),
             (INTESTINAL_OBSTRUCTION, CompetingDx.INTESTINAL_OBSTRUCTION),
             (ILEUS, CompetingDx.ILEUS),
+            (CONSTIPATION, CompetingDx.CONSTIPATION),
         ]:
             for text, start, end in sentence.get_patterns(pat):
                 yield res, text, start, end
