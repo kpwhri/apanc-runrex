@@ -22,6 +22,9 @@ class CompetingDx(Status):
     BLOOD_IN_VOMIT = 10
     PEPTIC_ULCER = 11
     GASTRODUODENITIS = 12
+    GERD = 13
+    INTESTINAL_OBSTRUCTION = 14
+    ILEUS = 15
 
 
 disorder = '(disease|disorder)'
@@ -121,6 +124,20 @@ GERD = Pattern(
     rf')'
 )
 
+INTESTINAL_OBSTRUCTION = Pattern(
+    rf'('
+    rf'(colon|intestin\w+|bowel) (occlu[sd]|obstruc|block)\w+'
+    rf'|(occlusion|obstruction|blockage) of (the )?(intestine|bowel|colon)'
+    rf')'
+)
+
+ILEUS = Pattern(
+    rf'('
+    rf'\bileus\b'
+    rf'|gastro intestinal atony'
+    rf')'
+)
+
 
 def has_competing_dx(document: Document):
     for sentence in document:
@@ -135,6 +152,9 @@ def has_competing_dx(document: Document):
             (BLOOD_IN_STOOL, CompetingDx.BLOOD_IN_STOOL),
             (PEPTIC_ULCER, CompetingDx.PEPTIC_ULCER),
             (GASTRODUODENITIS, CompetingDx.GASTRODUODENITIS),
+            (GERD, CompetingDx.GERD),
+            (INTESTINAL_OBSTRUCTION, CompetingDx.INTESTINAL_OBSTRUCTION),
+            (ILEUS, CompetingDx.ILEUS),
         ]:
             for text, start, end in sentence.get_patterns(pat):
                 yield res, text, start, end

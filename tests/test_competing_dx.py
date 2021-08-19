@@ -18,3 +18,19 @@ def test_gastroduodenitis(text, matches):
 ])
 def test_gerd(text, matches):
     assert bool(cdx.GERD.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('intestinal obstruction', True),
+    ('occlusion of the intestine', True),
+])
+def test_intestinal_obstruction(text, matches):
+    assert bool(cdx.INTESTINAL_OBSTRUCTION.matches(text)) == matches
+
+
+@pytest.mark.parametrize('text, matches', [
+    ('ileus', True),
+    ('gastro-intestinal atony', True),
+])
+def test_ileus(text, matches):
+    assert bool(cdx.ILEUS.matches(text)) == matches
