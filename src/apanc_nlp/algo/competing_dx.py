@@ -39,6 +39,7 @@ class CompetingDx(Status):
     BILIARY_CANCER = 27
     IBD = 28
     INFECTIOUS_GE = 29
+    ESOPHAGITIS = 30
 
 
 disorder = '(disease|disorder)'
