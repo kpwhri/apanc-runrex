@@ -88,7 +88,7 @@ WORSENING = Pattern(
     rf'worsening|increasing|(getting|gotten) worse'
 )
 
-duration_pat = re.compile(r'(?P<num>\d+) (?P<unit>day|wk|week|d|month|mon|m)s?\b')
+duration_pat = re.compile(r'(?P<num>\d+)\W*(?P<unit>day|wk|week|d|month|mon|m)s?\b')
 
 
 def extract_duration(text):
