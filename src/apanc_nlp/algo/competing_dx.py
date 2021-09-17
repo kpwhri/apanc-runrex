@@ -40,6 +40,7 @@ class CompetingDx(Status):
     IBD = 28
     INFECTIOUS_GE = 29
     ESOPHAGITIS = 30
+    NEGATIVE = 31
 
 
 disorder = '(disease|disorder)'
@@ -135,7 +136,8 @@ GASTRODUODENITIS = Pattern(
     rf'('
     rf'gastroduodenitis'
     rf'|gastritis (\w+ ){{0,3}}duodenitis'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 GERD = Pattern(
@@ -143,21 +145,24 @@ GERD = Pattern(
     rf'\bgerd\b'
     rf'|gastro esophag\w+ reflux'
     rf'|gastric acid reflux'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 INTESTINAL_OBSTRUCTION = Pattern(
     rf'('
     rf'(colon|intestin\w+|bowel) (occlu[sd]|obstruc|block)\w+'
     rf'|(occlusion|obstruction|blockage) of (the )?(intestine|bowel|colon)'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 ILEUS = Pattern(
     rf'('
     rf'\bileus\b'
     rf'|gastro intestinal atony'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 CONSTIPATION = Pattern(
@@ -165,13 +170,15 @@ CONSTIPATION = Pattern(
     rf'constipat\w+'
     rf'|difficulty? (passing|def[ae]cat\w+)'
     rf'|fa?ecal retention'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 MESENTERIC_ISCHEMIA = Pattern(
     rf'('
     rf'mesenteric (vascular )?(ischa?emia|insufficien\w+|angina)'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 DIVERTICULOSIS = Pattern(
@@ -180,7 +187,8 @@ DIVERTICULOSIS = Pattern(
     rf'|diverticu\w+ (of )?intestin\w+'
     rf'|diverticul\w+ (disease|disorder)'
     rf'|enteric diverticul\w+'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 HEPATITIS = Pattern(
@@ -188,33 +196,38 @@ HEPATITIS = Pattern(
     rf'hepatit\w+'
     rf'|liver inflamm?at\w+'
     rf'|inflamm?at\w+ ((disease|disorder) )?(of )?(the )?liver'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 INFLUENZA = Pattern(
     rf'('
     rf'influenza|\bflu\b|\bgrip?pe\b'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 FOOD_POISONING = Pattern(
     rf'('
     rf'food (poison\w*|intoxic\w+)'
     rf'|food borne? (illness|poisoning)'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 ASCITES = Pattern(
     rf'('
     rf'\bascites?\b|hydro(ps)? (peritone|abdomin)\w+'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 NEPHROLITHIASIS = Pattern(
     rf'('
     rf'nephrolith\w+|renal calcul\w+|(renal|kidney) (stone|lithias\w+|calcul\w+)'
     rf'|calculus of (the )?kidney'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 DKA = Pattern(
@@ -223,7 +236,8 @@ DKA = Pattern(
     rf'|keto[sa]\w+ in diabetes'
     rf'|diabetes mellitus with keto[ta]\w+'
     rf'|\bdka\b'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 MYOCARDIAL_ISCHEMIA = Pattern(
@@ -231,14 +245,16 @@ MYOCARDIAL_ISCHEMIA = Pattern(
     rf'(myocardial|cardiac) ischa?emias?'
     rf'|ischa?emic heart disease'
     rf'|\bihd\b'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 BILIARY_CANCER = Pattern(
     rf'('
     rf'(bill?iary( tract)?|gall bladder) (cancer|malignant|tumou?r|neoplasm)'
     rf'|(cancer|malignancy|tumou?r|neoplasm) of (the )?(bill?iary|gall bladder)'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 IBD = Pattern(
@@ -246,20 +262,23 @@ IBD = Pattern(
     rf'(irrit\w+|inflam\w+|auto immune) bowel'
     rf'|\bibd\b'
     rf'|chronic enter\w+'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 INFECTIOUS_GE = Pattern(
     rf'('
     rf'infecti?ous (gastro enteritis|colitis)'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 ESOPHAGITIS = Pattern(
     rf'('
     rf'o?esophagit\w+'
     rf'|inflam\w+ of (the )?o?esophagus'
-    rf')'
+    rf')',
+    negates=[negation]
 )
 
 
@@ -295,5 +314,8 @@ def has_competing_dx(document: Document):
             (INFECTIOUS_GE, CompetingDx.INFECTIOUS_GE),
             (ESOPHAGITIS, CompetingDx.ESOPHAGITIS),
         ]:
-            for text, start, end in sentence.get_patterns(pat):
-                yield res, text, start, end
+            for text, start, end, is_neg in sentence.get_patterns(pat, return_negation=True):
+                if is_neg:
+                    yield CompetingDx.NEGATIVE, text, start, end
+                else:
+                    yield res, text, start, end
