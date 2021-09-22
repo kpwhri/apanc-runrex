@@ -3,6 +3,8 @@ Abdominal pain.
 """
 import re
 
+from loguru import logger
+
 from runrex.algo.pattern import Pattern
 from runrex.algo.result import Status
 from runrex.terms import negation
@@ -24,6 +26,7 @@ class AbdPain(Status):
     LONG_AGO = 9
     SUDDEN_ONSET = 10
     WORSENING = 11
+    UNKNOWN_DURATION = 12
 
 
 PAIN = Pattern(
@@ -93,6 +96,10 @@ duration_pat = re.compile(r'(?P<num>\d+)\W*(?P<unit>day|wk|week|d|month|mon|m)s?
 
 def extract_duration(text):
     m = duration_pat.match(text)
+    if m is None:
+        # this is error handling
+        logger.error(f'Duration Pattern failed to match "{text}".')
+        return AbdPain.UNKNOWN_DURATION
     num = m.group('num')
     unit = m.group('unit')
     if unit in {'day', 'd'}:
