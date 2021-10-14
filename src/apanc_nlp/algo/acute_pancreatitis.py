@@ -18,6 +18,7 @@ class PancreatitisStatus(Status):
     INFLAMMATION = 4
     INTERSTITIAL = 5
     PERI_INFLAMMATION = 6
+    CONSISTENT_WITH = 7
 
 
 PANCREATITIS = Pattern(
@@ -64,6 +65,17 @@ INTERSTITIAL_PANCREATITIS = Pattern(
     negates=[negation]
 )
 
+CONSISTENT_WITH = Pattern(
+    rf'\b('
+    rf'consistent|compatible|eviden(ce|t)|suggestive|appear|convincing'
+    rf'|probabl[ey]|suggest(ive|ing)?|represent(ing)?|seen'
+    rf'|likely|positive|obvious|definite|perceived'
+    rf')(s|ly)?'
+    r'\W+(\w+\W*){0,4}'
+    r'pancreatitis',
+    negates=[r'\bnot\b']
+)
+
 
 def has_pancreatitis(document: Document):
     for sentence in document:
@@ -83,6 +95,9 @@ def has_pancreatitis(document: Document):
         for text, start, end in sentence.get_patterns(INTERSTITIAL_PANCREATITIS):
             found = True
             yield PancreatitisStatus.INTERSTITIAL, text, start, end
+        for text, start, end in sentence.get_patterns(CONSISTENT_WITH):
+            found = True
+            yield PancreatitisStatus.CONSISTENT_WITH, text, start, end
         if not found:
             for text, start, end in sentence.get_patterns(PANCREATITIS):
                 yield PancreatitisStatus.POSITIVE, text, start, end
