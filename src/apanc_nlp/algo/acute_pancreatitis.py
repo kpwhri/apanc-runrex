@@ -69,7 +69,7 @@ CONSISTENT_WITH = Pattern(
     rf'\b('
     rf'consistent|compatible|eviden(ce|t)|suggestive|appear|convincing'
     rf'|probabl[ey]|suggest(ive|ing)?|represent(ing)?|seen'
-    rf'|likely|positive|obvious|definite|perceived'
+    rf'|likely|positive|obvious|definite|perceived|uncomplicated'
     rf')(s|ly)?'
     r'\W+(\w+\W*){0,4}'
     r'pancreatitis',

@@ -1,6 +1,6 @@
 import pytest
 
-from apanc_nlp.algo.abd_pain import AbdPain, extract_duration
+from apanc_nlp.algo.abd_pain import AbdPain, extract_duration, RADIATING_TO_BACK
 
 
 @pytest.mark.parametrize('exp, text', [
@@ -15,3 +15,7 @@ from apanc_nlp.algo.abd_pain import AbdPain, extract_duration
 ])
 def test_extract_duration(exp, text):
     assert extract_duration(text) == exp
+
+
+def test_radiate_to_back():
+    assert RADIATING_TO_BACK.matches('radiates to back')
