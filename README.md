@@ -91,10 +91,39 @@ pytest tests
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+The first entry (1. Running Runrex Application) is the primary use. This will identity 'concepts' in the text.
+ Secondary use converts these 'concepts' into various other formats. For these, additional packages (`pandas` and `sqlalchemy`) are required.
+ Install with `pip install -r requirements-extra.txt`.
+
+### 1. Running Runrex Application
+
 * Build a configuration file as defined in [runrex](https://github.com/kpwhri/runrex)
     - Full details defined in that project's [schema.py](https://github.com/kpwhri/runrex/blob/master/src/runrex/schema.py)
-* `python run.py runrex.conf.(py|json|yaml)`
+* Run the application
+    - `python src/run.py runrex.conf.(py|json|yaml)`
+* Organize outputs
+    - `python src/extract_and_load_json.py  --file [OUTPUT file from RUNREX; ends in jsonl] --version runrex`
 
+### 2. Build Variables
+Build secondary variables for subsequent analysis. You can use the pre-built variables (default) or supply your own.
+ These secondary variables build on the output of running regex.
+
+* `python src/build_variables.py --file [PATH to output from 'extract_and_load_json' above] --metafile [PATH to table created in step #1]`
+
+### 3. Build Review Lists
+Build CSV files of each algorithm/category for manual review of algorithms/categories output by `run.py`.
+
+#### Step A
+* First, you'll need to take a look at the runrex configuration file (something like 'config.py' which is supplied as input?). Open that up and see if you have a line that looks like this:
+    - `'loginfo': {'directory': r'C:\path\to\somewhere'}`
+
+* If so, locate that file and use it as the `--log-file` in Step B (you can skip to Step B).
+* Otherwise, re-run runrex with the `loginfo` option specified.
+
+#### Step B
+
+* `python build_review_lists.py --output-file [PATH  to runrex output file; original jsonl or the transformed to csv] --log-file [PATH to log file from step B] --metafile [PATH to CSV table created in step #1]`
+*  This will generate a series of CSV files (randomly ordered) for manual review. There are currently offset problems in runrex, so this does not currently work as well as desired.
 
 ## Variables Identified
 
@@ -121,33 +150,33 @@ Variables (called 'algorithms') are broken down into various 'categories'. Eithe
 |[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|INTERSTITIAL|interstitial pancreatitis|
 |[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|PERI_INFLAMMATION|Peri-inflammation|
 |[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|CONSISTENT_WITH|Radiology conclusion-like language (e.g., consistent with)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ACUTE_APPENDICITIS|Presence of acute_appendicitis (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|GALL_BLADDER_DISEASE|Presence of gall_bladder_disease (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ACUTE_APPENDICITIS|Presence of acute appendicitis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|GALL_BLADDER_DISEASE|Presence of gall bladder disease (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BOWEL_MOVEMENTS|Presence of bowel_movements (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|COLANGITIS|Presence of colangitis (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|CHRONIC_PAIN|Presence of chronic_pain (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|CHRONIC_PAIN|Presence of chronic pain (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|STROKE|Presence of stroke (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BLOOD_IN_STOOL|Presence of blood_in_stool (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BLOOD_IN_VOMIT|Presence of blood_in_vomit (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|PEPTIC_ULCER|Presence of peptic_ulcer (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BLOOD_IN_STOOL|Presence of blood in stool (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BLOOD_IN_VOMIT|Presence of blood in vomit (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|PEPTIC_ULCER|Presence of peptic ulcer (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|GASTRODUODENITIS|Presence of gastroduodenitis (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|GERD|Presence of gerd (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|INTESTINAL_OBSTRUCTION|Presence of intestinal_obstruction (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ILEUS|Presence of ileus (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|CONSTIPATION|Presence of constipation (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|MESENTERIC_ISCHEMIA|Presence of mesenteric_ischemia (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|MESENTERIC_ISCHEMIA|Presence of mesenteric ischemia (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|DIVERTICULOSIS|Presence of diverticulosis (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|APPENDICITIS|Presence of appendicitis (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|HEPATITIS|Presence of hepatitis (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|INFLUENZA|Presence of influenza (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|FOOD_POISONING|Presence of food_poisoning (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|FOOD_POISONING|Presence of food poisoning (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ASCITES|Presence of ascites (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|NEPHROLITHIASIS|Presence of nephrolithiasis (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|DKA|Presence of dka (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|MYOCARDIAL_ISCHEMIA|Presence of myocardial_ischemia (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BILIARY_CANCER|Presence of biliary_cancer (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|MYOCARDIAL_ISCHEMIA|Presence of myocardial ischemia (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BILIARY_CANCER|Presence of biliary cancer (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|IBD|Presence of ibd (competing diagnosis)|
-|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|INFECTIOUS_GE|Presence of infectious_ge (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|INFECTIOUS_GE|Presence of infectious gastroenteritis (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ESOPHAGITIS|Presence of esophagitis (competing diagnosis)|
 |[competing_dx](src/apanc_nlp/algo/competing_dx.py)|NEGATIVE|Presence of negative (competing diagnosis)|
 |[fluid](src/apanc_nlp/algo/fluid.py)|APFC|Acute peri-pancreatic fluid|
