@@ -1,6 +1,6 @@
 import pytest
 
-from apanc_nlp.algo.abd_pain import AbdPain, extract_duration, RADIATING_TO_BACK
+from apanc_nlp.algo.pain import AbdPain, extract_duration, RADIATING_TO_BACK
 
 
 @pytest.mark.parametrize('exp, text', [

@@ -36,7 +36,7 @@ PANCREATITIS_NECROSIS = Pattern(
 
 PERIPANCREATIC_NECROSIS = Pattern(
     rf'('
-    rf'peri ?pancreatic {necrosis}'
+    rf'peri ?pancrea\w+ {necrosis}'
     rf')',
     negates=[negation]
 )

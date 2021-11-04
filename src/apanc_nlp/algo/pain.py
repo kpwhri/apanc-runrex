@@ -84,7 +84,7 @@ SUDDEN_ONSET = Pattern(
 )
 
 DURATION = Pattern(
-    rf'(?P<val>\d+ (day|wk|week|d|month|mon|m))s?\b'
+    rf'(?P<val>\d+ (day|wk|week|d|month|mon|m|year|yr))s?\b'
 )
 
 WORSENING = Pattern(
@@ -107,6 +107,8 @@ def extract_duration(text):
     elif unit in {'week', 'w', 'wk'}:
         return AbdPain.RECENT
     elif unit in {'month', 'm', 'mon'}:
+        return AbdPain.LONG_AGO
+    elif unit in {'year', 'yr'}:
         return AbdPain.LONG_AGO
 
 

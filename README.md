@@ -102,9 +102,65 @@ Variables (called 'algorithms') are broken down into various 'categories'. Eithe
 
 |Algorithm|Category|Description|
 |---|---|---|
-
-
-
+|[pain](src/apanc_nlp/algo/pain.py)|ABD_PAIN|Abdominal pain|
+|[pain](src/apanc_nlp/algo/pain.py)|RADIATING_TO_BACK|Pain described as radiating to the back|
+|[pain](src/apanc_nlp/algo/pain.py)|ACUTE|Acute pain|
+|[pain](src/apanc_nlp/algo/pain.py)|EPIGASTRIC|Epigastric pain|
+|[pain](src/apanc_nlp/algo/pain.py)|CHEST|Chest pain|
+|[pain](src/apanc_nlp/algo/pain.py)|CHRONIC|Chronic Pain|
+|[pain](src/apanc_nlp/algo/pain.py)|RECENT|Recent pain (in weeks)|
+|[pain](src/apanc_nlp/algo/pain.py)|VERY_RECENT|Recent pain (in days)|
+|[pain](src/apanc_nlp/algo/pain.py)|LONG_AGO|Non-recent pain (in months)|
+|[pain](src/apanc_nlp/algo/pain.py)|SUDDEN_ONSET|Sudden onset pain|
+|[pain](src/apanc_nlp/algo/pain.py)|WORSENING|Pain described as worsening|
+|[pain](src/apanc_nlp/algo/pain.py)|UNKNOWN_DURATION|Likely unrecognized time format for recency|
+|[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|POSITIVE|Generic pancreatitis|
+|[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|ACUTE|Acute pancreatitis|
+|[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|CHRONIC|Chronic pancreatitis|
+|[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|INFLAMMATION|inflammation|
+|[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|INTERSTITIAL|interstitial pancreatitis|
+|[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|PERI_INFLAMMATION|Peri-inflammation|
+|[pancreatitis](src/apanc_nlp/algo/pancreatitis.py)|CONSISTENT_WITH|Radiology conclusion-like language (e.g., consistent with)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ACUTE_APPENDICITIS|Presence of acute_appendicitis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|GALL_BLADDER_DISEASE|Presence of gall_bladder_disease (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BOWEL_MOVEMENTS|Presence of bowel_movements (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|COLANGITIS|Presence of colangitis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|CHRONIC_PAIN|Presence of chronic_pain (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|STROKE|Presence of stroke (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BLOOD_IN_STOOL|Presence of blood_in_stool (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BLOOD_IN_VOMIT|Presence of blood_in_vomit (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|PEPTIC_ULCER|Presence of peptic_ulcer (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|GASTRODUODENITIS|Presence of gastroduodenitis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|GERD|Presence of gerd (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|INTESTINAL_OBSTRUCTION|Presence of intestinal_obstruction (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ILEUS|Presence of ileus (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|CONSTIPATION|Presence of constipation (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|MESENTERIC_ISCHEMIA|Presence of mesenteric_ischemia (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|DIVERTICULOSIS|Presence of diverticulosis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|APPENDICITIS|Presence of appendicitis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|HEPATITIS|Presence of hepatitis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|INFLUENZA|Presence of influenza (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|FOOD_POISONING|Presence of food_poisoning (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ASCITES|Presence of ascites (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|NEPHROLITHIASIS|Presence of nephrolithiasis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|DKA|Presence of dka (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|MYOCARDIAL_ISCHEMIA|Presence of myocardial_ischemia (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|BILIARY_CANCER|Presence of biliary_cancer (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|IBD|Presence of ibd (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|INFECTIOUS_GE|Presence of infectious_ge (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|ESOPHAGITIS|Presence of esophagitis (competing diagnosis)|
+|[competing_dx](src/apanc_nlp/algo/competing_dx.py)|NEGATIVE|Presence of negative (competing diagnosis)|
+|[fluid](src/apanc_nlp/algo/fluid.py)|APFC|Acute peri-pancreatic fluid|
+|[fluid](src/apanc_nlp/algo/fluid.py)|PANCREATIC|Pancreatic fluid|
+|[fluid](src/apanc_nlp/algo/fluid.py)|WALLED_OFF|Walled off fluid|
+|[nausea](src/apanc_nlp/algo/nausea.py)|VOMITING|Vomiting|
+|[nausea](src/apanc_nlp/algo/nausea.py)|NAUSEA|Nausea|
+|[necrosis](src/apanc_nlp/algo/necrosis.py)|POSITIVE|Generic mention of necrosis|
+|[necrosis](src/apanc_nlp/algo/necrosis.py)|PANCREATITIS|Pancreatic necrosis|
+|[necrosis](src/apanc_nlp/algo/necrosis.py)|PERIPANCREATIC|Peri-pancreatic necrosis|
+|[necrosis](src/apanc_nlp/algo/necrosis.py)|ACUTE_COLLECTION|Acute necrotic collection|
+|[pseudocyst](src/apanc_nlp/algo/pseudocyst.py)|POSITIVE|Generic pseudocyst|
+|[pseudocyst](src/apanc_nlp/algo/pseudocyst.py)|PANCREATIC|Pancreatic pseudocyst|
 
 ## Output Format
 
@@ -115,7 +171,7 @@ Recommended format is `jsonl`. For more details, see [runrex](https://github.com
 
 <!-- Uses [SEMVER](https://semver.org/). -->
 
-Updates/changes are not expected. Versioning is based on `YYYYmmm`. See https://github.com/kpwhri/apanc-runrex/releases.
+Updates/changes are not expected. Versioning likely based on release timing in `YYYYmm`. See https://github.com/kpwhri/apanc-runrex/releases.
 
 <!-- ROADMAP -->
 ## Roadmap

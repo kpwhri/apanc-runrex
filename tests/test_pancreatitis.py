@@ -1,7 +1,7 @@
 import pytest
 from runrex.text import Document
 
-from apanc_nlp.algo.acute_pancreatitis import CONSISTENT_WITH, PancreatitisStatus, has_pancreatitis
+from apanc_nlp.algo.pancreatitis import CONSISTENT_WITH, PancreatitisStatus, has_pancreatitis
 
 
 @pytest.mark.parametrize('text, exp', [

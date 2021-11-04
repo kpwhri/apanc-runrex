@@ -4,8 +4,8 @@ from typing import Tuple
 from runrex.main import process
 from runrex.schema import validate_config
 
-from apanc_nlp.algo.abd_pain import has_abdominal_pain
-from apanc_nlp.algo.acute_pancreatitis import has_pancreatitis
+from apanc_nlp.algo.pain import has_abdominal_pain
+from apanc_nlp.algo.pancreatitis import has_pancreatitis
 from apanc_nlp.algo.competing_dx import has_competing_dx
 from apanc_nlp.algo.fluid import has_fluid
 from apanc_nlp.algo.nausea import has_nausea
