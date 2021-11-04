@@ -15,7 +15,7 @@ from apanc_nlp.algo.common import chronic
 
 class AbdPain(Status):
     NONE = -1
-    PAIN = 1
+    ABD_PAIN = 1
     RADIATING_TO_BACK = 2
     ACUTE = 3
     EPIGASTRIC = 4
@@ -115,7 +115,7 @@ def has_abdominal_pain(document: Document):
         for text, start, end in sentence.get_patterns(CHRONIC):
             yield AbdPain.CHRONIC, text, start, end
         for text, start, end in sentence.get_patterns(ABD_PAIN):
-            yield AbdPain.PAIN, text, start, end
+            yield AbdPain.ABD_PAIN, text, start, end
         for text, start, end in sentence.get_patterns(EPIGASTRIC_PAIN):
             yield AbdPain.EPIGASTRIC, text, start, end
         for text, start, end in sentence.get_patterns(CHEST_PAIN):
