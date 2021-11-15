@@ -1,6 +1,6 @@
 import pytest
 
-from apanc_nlp.algo.pain import AbdPain, extract_duration, RADIATING_TO_BACK, CHRONIC
+from apanc_nlp.algo.pain import AbdPain, extract_duration, RADIATING_TO_BACK, CHRONIC, CHEST_PAIN
 
 
 @pytest.mark.parametrize('exp, text', [
@@ -29,3 +29,11 @@ def test_radiate_to_back():
 ])
 def test_chronic(text, exp):
     assert bool(CHRONIC.matches(text)) is exp
+
+
+@pytest.mark.parametrize('text, exp', [
+    ('negative for chest pain', False),
+    ('chest pain', True),
+])
+def test_chest(text, exp):
+    assert bool(CHEST_PAIN.matches(text)) is exp
