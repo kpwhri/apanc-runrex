@@ -35,7 +35,7 @@ PAIN = Pattern(
 )
 
 CHRONIC = Pattern(
-    rf'{chronic}',
+    rf'{chronic} ((abd?(ominal)?|luq|llq|rlq|ruq|flank|uq|lq|quadrant) )?pain',
     negates=[negation]
 )
 
