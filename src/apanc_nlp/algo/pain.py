@@ -78,14 +78,14 @@ SEVERITY = Pattern(
 )
 
 SUDDEN_ONSET = Pattern(
-    rf'sudden onset'
+    rf'(sudden onset'
     rf'|onset ((late|early) )?(this|yesterday|last) (morning|evening|afternoon)'
-    rf''
+    rf')'
 )
 
 DURATION = Pattern(
     rf'(?P<val>\d+ (day|wk|week|d|month|mon|m|year|yr))s?\b',
-    negates=[r'\bht\b'],
+    negates=[r'\bht\b', r'every\b'],
 )
 
 WORSENING = Pattern(
@@ -94,6 +94,10 @@ WORSENING = Pattern(
 
 duration_pat = re.compile(r'(?P<num>\d+)\W*(?P<unit>day|wk|week|d|month|mon|m)s?\b',
                           re.I)
+
+
+def is_close_to_pain(text, start, end, window):
+    return bool(PAIN.matches(text[max(0, start - window): end + window]))
 
 
 def extract_duration(text):
@@ -113,7 +117,7 @@ def extract_duration(text):
         return AbdPain.LONG_AGO
 
 
-def has_abdominal_pain(document: Document):
+def has_abdominal_pain(document: Document, window=30):
     for sentence in document.select_sentences_with_patterns(PAIN):
         for text, start, end in sentence.get_patterns(CHRONIC):
             yield AbdPain.CHRONIC, text, start, end
@@ -126,10 +130,14 @@ def has_abdominal_pain(document: Document):
         for text, start, end in sentence.get_patterns(RADIATING_TO_BACK):
             yield AbdPain.RADIATING_TO_BACK, text, start, end
         for text, start, end in sentence.get_patterns(SEVERITY):
-            yield AbdPain.ACUTE, text, start, end
+            if is_close_to_pain(sentence.text, start, end, window=window):
+                yield AbdPain.ACUTE, text, start, end
         for text, start, end in sentence.get_patterns(SUDDEN_ONSET):
-            yield AbdPain.SUDDEN_ONSET, text, start, end
+            if is_close_to_pain(sentence.text, start, end, window=window):
+                yield AbdPain.SUDDEN_ONSET, text, start, end
         for text, start, end in sentence.get_patterns(DURATION, index='val'):
-            yield extract_duration(text), text, start, end
+            if is_close_to_pain(sentence.text, start, end, window=window):
+                yield extract_duration(text), text, start, end
         for text, start, end in sentence.get_patterns(WORSENING):
-            yield AbdPain.WORSENING, text, start, end
+            if is_close_to_pain(sentence.text, start, end, window=window):
+                yield AbdPain.WORSENING, text, start, end

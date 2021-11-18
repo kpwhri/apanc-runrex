@@ -1,6 +1,8 @@
 import pytest
+from runrex.text import Document
 
-from apanc_nlp.algo.pain import AbdPain, extract_duration, RADIATING_TO_BACK, CHRONIC, CHEST_PAIN, DURATION
+from apanc_nlp.algo.pain import AbdPain, extract_duration, RADIATING_TO_BACK, CHRONIC, CHEST_PAIN, DURATION, \
+    is_close_to_pain, has_abdominal_pain
 
 
 @pytest.mark.parametrize('exp, text', [
@@ -46,3 +48,29 @@ def test_chest(text, exp):
 ])
 def test_duration(text, exp):
     assert bool(DURATION.matches(text)) is exp
+
+
+@pytest.mark.parametrize('text, start, end, window, exp', [
+    ('pain for 1 week', 9, 15, 20, True),
+    ('1 week of acute pain', 0, 6, 20, True),
+    ('pain blah blah blah blah blah 1 week', 30, 36, 20, False),
+    ('1 week of joy and happiness blah blah blah blah blah pain', 0, 6, 20, False),
+])
+def test_is_close_to_pain(text, start, end, window, exp):
+    assert is_close_to_pain(text, start, end, window) == exp
+
+
+@pytest.mark.parametrize('text, exp', [
+    ('pain for 1 week', AbdPain.RECENT),
+    ('1 week of acute pain', AbdPain.RECENT),
+    ('pain blah blah blah blah blah 1 week', None),
+    ('1 week of joy and happiness blah blah blah blah blah pain', None),
+])
+def test_has_abdominal_pain(text, exp):
+    doc = Document('noname', text=text)
+    lst = list(has_abdominal_pain(doc, window=20))
+    if len(lst) == 0:
+        assert exp is None
+    else:
+        result, text, start, end = lst[0]
+        assert result == exp
