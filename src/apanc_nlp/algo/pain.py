@@ -84,7 +84,8 @@ SUDDEN_ONSET = Pattern(
 )
 
 DURATION = Pattern(
-    rf'(?P<val>\d+ (day|wk|week|d|month|mon|m|year|yr))s?\b'
+    rf'(?P<val>\d+ (day|wk|week|d|month|mon|m|year|yr))s?\b',
+    negates=[r'\bht\b'],
 )
 
 WORSENING = Pattern(
