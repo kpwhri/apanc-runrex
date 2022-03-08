@@ -131,6 +131,23 @@ Build CSV files of each algorithm/category for manual review of algorithms/categ
 
 Variables (called 'algorithms') are broken down into various 'categories'. Either can be used in building features.
 
+### Output Variable Names
+The names of the algorithms/categories below should provide insight into the automatically-generated names of columns in the output.
+Some abbreviations:
+
+* `panc`: pancreatitis
+* `apanc`: acute pancreatitis
+* `is_r`: from radiology/imaging
+* `all`: all mentions included (not grouped by date/encounter)
+
+When the column names are reduced (when using the `--sas-column-names` parameter), some additional abbreviations may be used:
+
+* `cdx`: competing diagnosis
+* `pancr`: pancreatitis
+* `pscyst`: pseudocyst
+
+### Variable List
+
 |Algorithm|Category|Description|
 |---|---|---|
 |[pain](src/apanc_nlp/algo/pain.py)|ABD_PAIN|Abdominal pain|
