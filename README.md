@@ -146,6 +146,8 @@ When the column names are reduced (when using the `--sas-column-names` parameter
 * `pancr`: pancreatitis
 * `pscyst`: pseudocyst
 
+Certain category names might also appear truncated.
+
 ### Variable List
 
 |Algorithm|Category|Description|
