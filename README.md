@@ -108,6 +108,8 @@ The first entry (1. Running Runrex Application) is the primary use. This will id
 Build secondary variables for subsequent analysis. You can use the pre-built variables (default) or supply your own.
  These secondary variables build on the output of running regex.
 
+To force all output columns to fit within the 32 characters required by a SAS dataset, add the option `--sas-column-names`.
+
 * `python src/build_variables.py --file [PATH to output from 'extract_and_load_json' above] --metafile [PATH to table created in step #1]`
 
 ### 3. Build Review Lists
