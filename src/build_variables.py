@@ -32,9 +32,23 @@ VARIABLES = {
     'pseudocyst_in_imaging': ('+is_radiology', '+pseudocyst'),
 }
 
+TRANSFORMERS = {
+    'competing_dx': 'cdx',
+    'pancreatits': 'pancr',
+    'pseudocyst': 'pscyst',
+}
 
-def build_variables(file, metafile):
-    res = vb.build_variables(file, metafile, extra_condition='is_radiology', **VARIABLES)
+
+def build_variables(file, metafile, sas_column_names=None):
+    if sas_column_names:
+        transformers = TRANSFORMERS
+        max_col_length = 32
+    else:
+        transformers = None
+        max_col_length = None
+    res = vb.build_variables(file, metafile,
+                             max_col_length=max_col_length, column_name_transformers=transformers,
+                             extra_condition='is_radiology', **VARIABLES)
     outdir = file.parent
     res.to_csv(
         outdir / f'ap_final_variables_{datetime.datetime.now().strftime("%Y%m%d")}.csv',
@@ -52,5 +66,7 @@ if __name__ == '__main__':
                         help='Fullpath to CSV file containing metadata. Must at least contain:'
                              ' doc_id, patient_id, total_text_length, date. May also contain'
                              ' other variables as well.')
+    parser.add_argument('--sas-column-names', action='store_true', default=False,
+                        help='Limit column names to 32 characters.')
     args = parser.parse_args()
-    build_variables(args.file, args.metafile)
+    build_variables(args.file, args.metafile, sas_column_names=args.sas_column_names)
