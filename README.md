@@ -150,6 +150,10 @@ Certain category names might also appear truncated.
 
 ### Variable List
 
+Complete data dictionaries are included in the [res/ directory](res):
+* Complete variable names: [data-dictionary.csv](res/data-dictionary.csv)
+* Reduced variable names for SAS: [data-dictionary-sas.csv](res/data-dictionary-sas.csv)
+
 |Algorithm|Category|Description|
 |---|---|---|
 |[pain](src/apanc_nlp/algo/pain.py)|ABD_PAIN|Abdominal pain|
