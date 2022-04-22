@@ -110,7 +110,20 @@ Build secondary variables for subsequent analysis. You can use the pre-built var
 
 To force all output columns to fit within the 32 characters required by a SAS dataset, add the option `--sas-column-names`.
 
-* `python src/build_variables.py --file [PATH to output from 'extract_and_load_json' above] --metafile [PATH to table created in step #1]`
+These will often require additional metadata to complete. The recommended table structure for the included secondary variables is:
+
+#### Meta Table
+Please create a CSV file with the following columns:
+
+* `doc_id` = this should correspond to the id that was supplied to the runrex algorithm. It may be specified in the `config.py` file.
+* `patient_id` = patient id or studyid; this is only used to aggregate the data to the patient level
+* `total_text_length` = the length of the note (e.g., in SQL Server `len(text)` is fine)
+* `is_radiology` = 1 if not is imaging/from radiology; 0 if not
+* `date` = preferably not a datetime; preferable format is 'YYYY-mm-dd' (e.g., '2011-02-17' for Feb 17, 2011)
+* `text` = the complete text; this will be used in step #3 to create files for manual review of concepts
+
+#### Build Secondary Variables
+* `python src/build_variables.py --file [PATH to output from 'extract_and_load_json' above] --metafile [PATH to table created above ("Meta Table")]`
 
 ### 3. Build Review Lists
 Build CSV files of each algorithm/category for manual review of algorithms/categories output by `run.py`.
