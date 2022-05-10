@@ -3,7 +3,14 @@ import os
 path = r'examples/data'
 config = {
     'corpus': {
-        'directory': os.path.join(path, 'corpus')
+        'directory': os.path.join(path, 'corpus'),
+        'connections': [
+            {
+                'name': os.path.join(path, 'corpus.csv'),
+                'name_col': 'doc_id',
+                'text_col': 'text',
+            }
+        ]
     },
     'output': {
         'name': 'apanc_runrex_results_{datetime}',
