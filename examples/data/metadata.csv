@@ -1,0 +1,5 @@
+doc_id,text,patient_id,total_text_length,is_radiology,date
+1,Chest pain radiating to back. Some nausea,1,41,0,2020-02-03
+2,Appendicitis,1,12,1,2020-04-19
+3,No pseudocyst of pancreas. No pseudocyst.,2,41,0,2019-12-31
+4,"Patient has acute pancreatitis. Nausea, vomitting, and shortness of breath.",3,75,0,2020-01-15
