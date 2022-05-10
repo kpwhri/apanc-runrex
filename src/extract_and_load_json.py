@@ -101,24 +101,41 @@ def get_pytakes_data(data, name, counter, corpus_path, corpus_suffix):
 
 
 @lru_cache(maxsize=512)
-def get_text(corpus_path, fn, corpus_suffix='', encoding='utf8'):
-    if not corpus_path:
-        return ''
+def get_corpus_text(corpus_path: pathlib.Path, fn, corpus_suffix='', encoding='utf8', name_col='doc_id', text_col='text'):
+    if corpus_path.suffix == '.csv':
+        with open(corpus_path, encoding=encoding, newline='') as fh:
+            for row in csv.DictReader(fh):
+                if row[name_col] == fn:
+                    return row[text_col]
     fp = os.path.join(corpus_path, fn)
     if not os.path.exists(fp):
         fp = f'{fp}{corpus_suffix}'
+    if not os.path.exists(fp):
+        return ''
     with open(fp, encoding=encoding) as cfh:
         text = cfh.read()
     return text
 
 
-def get_runrex_data(data, name, counter, corpus_path, corpus_suffix):
+def get_text(corpus_paths, fn, corpus_suffix='', encoding='utf8', name_col='doc_id', text_col='text'):
+    if not corpus_paths:
+        return ''
+    for corpus_path in corpus_paths:
+        if not corpus_path:
+            continue
+        text = get_corpus_text(corpus_path, fn, corpus_suffix, encoding, name_col, text_col)
+        if text:
+            return text
+    return ''
+
+
+def get_runrex_data(data, name, counter, corpus_paths, corpus_suffix):
     doc_id = data['name']
     algo = data['algorithm']
     cat = data['category']
     counter[f'{cat}_{algo}'] += 1
     counter[cat] += 1
-    text = get_text(corpus_path, doc_id, corpus_suffix)
+    text = get_text(corpus_paths, doc_id, corpus_suffix)
     start_idx = int(data['start'])
     end_idx = int(data['end'])
     return {
@@ -133,30 +150,30 @@ def get_runrex_data(data, name, counter, corpus_path, corpus_suffix):
     }
 
 
-def get_data(version, data, name, counter, corpus_path, corpus_suffix):
+def get_data(version, data, name, counter, corpus_paths, corpus_suffix):
     if version == 'runrex':
-        return get_runrex_data(data, name, counter, corpus_path, corpus_suffix)
+        return get_runrex_data(data, name, counter, corpus_paths, corpus_suffix)
     elif version == 'pytakes':
-        return get_pytakes_data(data, name, counter, corpus_path, corpus_suffix)
+        return get_pytakes_data(data, name, counter, corpus_paths, corpus_suffix)
     else:
         raise ValueError(f'Expected version: pytakes or runrex, got {version}')
 
 
-def get_pytakes_entry(Entry, data, name, counter, corpus_path, corpus_suffix):
+def get_pytakes_entry(Entry, data, name, counter, corpus_paths, corpus_suffix):
     """Get database entry for pytakes file"""
-    return Entry(**get_pytakes_data(data, name, counter, corpus_path, corpus_suffix))
+    return Entry(**get_pytakes_data(data, name, counter, corpus_paths, corpus_suffix))
 
 
-def get_runrex_entry(Entry, data, name, counter, corpus_path, corpus_suffix):
+def get_runrex_entry(Entry, data, name, counter, corpus_paths, corpus_suffix):
     """Get database entry for runrex file"""
-    return Entry(**get_runrex_data(data, name, counter, corpus_path, corpus_suffix))
+    return Entry(**get_runrex_data(data, name, counter, corpus_paths, corpus_suffix))
 
 
-def get_entry(version, Entry, data, name, counter, corpus_path, corpus_suffix):
+def get_entry(version, Entry, data, name, counter, corpus_paths, corpus_suffix):
     if version == 'runrex':
-        return get_runrex_entry(Entry, data, name, counter, corpus_path, corpus_suffix)
+        return get_runrex_entry(Entry, data, name, counter, corpus_paths, corpus_suffix)
     elif version == 'pytakes':
-        return get_pytakes_entry(Entry, data, name, counter, corpus_path, corpus_suffix)
+        return get_pytakes_entry(Entry, data, name, counter, corpus_paths, corpus_suffix)
     else:
         raise ValueError(f'Expected version: pytakes or runrex, got {version}')
 
@@ -174,7 +191,7 @@ def get_csv_header(version):
         raise ValueError(f'Expected version: pytakes or runrex, go {version}')
 
 
-def write_to_file(file: pathlib.Path, version, output_directory=None, corpus_path=None, corpus_suffix=''):
+def write_to_file(file: pathlib.Path, version, output_directory=None, corpus_paths=None, corpus_suffix=''):
     name = file.name.split('.')[0]
     if not output_directory:
         output_directory = file.parent
@@ -193,7 +210,7 @@ def write_to_file(file: pathlib.Path, version, output_directory=None, corpus_pat
         with open(file) as fh:
             for i, line in enumerate(fh, start=1):
                 data = json.loads(line)
-                row = get_data(version, data, name, counter, corpus_path, corpus_suffix)
+                row = get_data(version, data, name, counter, corpus_paths, corpus_suffix)
                 writer.writerow(row)
                 doc_ids.add(row['doc_id'])
                 if i % 100 == 0:
@@ -249,13 +266,13 @@ def output_stats(file, n_docs, counter):
 
 
 def main(file: pathlib.Path, version, *, connection_string=None,
-         output_directory=None, corpus_path=None, corpus_suffix=None):
+         output_directory=None, corpus_paths=None, corpus_suffix=None):
     if connection_string:
-        write_to_database(file, version, connection_string, corpus_path, corpus_suffix)
+        write_to_database(file, version, connection_string, corpus_paths, corpus_suffix)
         if output_directory:
-            write_to_file(file, version, output_directory, corpus_path, corpus_suffix)
+            write_to_file(file, version, output_directory, corpus_paths, corpus_suffix)
     else:
-        write_to_file(file, version, output_directory, corpus_path, corpus_suffix)
+        write_to_file(file, version, output_directory, corpus_paths, corpus_suffix)
 
 
 if __name__ == '__main__':
@@ -273,6 +290,9 @@ if __name__ == '__main__':
     parser.add_argument('--corpus-path', dest='corpus_path', default=None, type=pathlib.Path,
                         help='Path to directory containing corpus files. The filename must match'
                              ' the `doc_id` value exactly.')
+    parser.add_argument('--corpus-paths', dest='corpus_paths', default=list(), nargs='+', type=pathlib.Path,
+                        help='Path to directory containing corpus files. The filename must match'
+                             ' the `doc_id` value exactly.')
     parser.add_argument('--corpus-suffix', dest='corpus_suffix', default='',
                         help='Files in the corpus will be look for under f"{corpus_path}/{doc_id}{corpus_suffix}".')
 
@@ -280,6 +300,6 @@ if __name__ == '__main__':
     main(args.file, args.version,
          connection_string=args.connection_string,
          output_directory=args.output_directory,
-         corpus_path=args.corpus_path,
+         corpus_paths=args.corpus_paths + [args.corpus_path],
          corpus_suffix=args.corpus_suffix,
          )
