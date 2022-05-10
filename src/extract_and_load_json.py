@@ -146,8 +146,8 @@ def get_runrex_data(data, name, counter, corpus_paths, corpus_suffix):
         'category': cat,
         'start_idx': start_idx,
         'end_idx': end_idx,
-        'pre_context': text[max(start_idx - 150, 0): end_idx][-249:] if start_idx else '',
-        'post_context': text[start_idx: end_idx + 150][:249] if start_idx else '',
+        'pre_context': text[max(start_idx - 150, 0): end_idx][-249:] if start_idx is not None else '',
+        'post_context': text[start_idx: end_idx + 150][:249] if start_idx is not None else '',
     }
 
 
