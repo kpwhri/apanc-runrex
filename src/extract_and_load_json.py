@@ -101,7 +101,8 @@ def get_pytakes_data(data, name, counter, corpus_path, corpus_suffix):
 
 
 @lru_cache(maxsize=512)
-def get_corpus_text(corpus_path: pathlib.Path, fn, corpus_suffix='', encoding='utf8', name_col='doc_id', text_col='text'):
+def get_corpus_text(corpus_path: pathlib.Path, fn, corpus_suffix='',
+                    encoding='utf8', name_col='doc_id', text_col='text'):
     if corpus_path.suffix == '.csv':
         with open(corpus_path, encoding=encoding, newline='') as fh:
             for row in csv.DictReader(fh):
@@ -110,8 +111,8 @@ def get_corpus_text(corpus_path: pathlib.Path, fn, corpus_suffix='', encoding='u
     fp = os.path.join(corpus_path, fn)
     if not os.path.exists(fp):
         fp = f'{fp}{corpus_suffix}'
-    if not os.path.exists(fp):
-        return ''
+        if not os.path.exists(fp):
+            return ''
     with open(fp, encoding=encoding) as cfh:
         text = cfh.read()
     return text
