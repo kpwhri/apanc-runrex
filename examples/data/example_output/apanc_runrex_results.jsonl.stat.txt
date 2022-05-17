@@ -1,0 +1,14 @@
+Unique Documents with a hit:	6
+Other Variables (count):
+	VOMITING_nausea	2
+	VOMITING	2
+	RADIATING_TO_BACK_pain	2
+	RADIATING_TO_BACK	2
+	NAUSEA_nausea	4
+	NAUSEA	4
+	CHEST_pain	2
+	CHEST	2
+	APPENDICITIS_competing_dx	2
+	APPENDICITIS	2
+	ACUTE_pancreatitis	2
+	ACUTE	2
