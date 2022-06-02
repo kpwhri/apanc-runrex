@@ -44,7 +44,7 @@ def build_variables(file, metafile, sas_column_names=None):
         transformers = TRANSFORMERS
         max_col_length = 32
     else:
-        transformers = None
+        transformers = []
         max_col_length = None
     res = vb.build_variables(file, metafile,
                              max_column_length=max_col_length, column_name_transformers=transformers,
